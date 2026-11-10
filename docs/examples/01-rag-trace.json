@@ -1,0 +1,64 @@
+{
+  "events": [
+    {
+      "schema_version": "0.1",
+      "event_id": "0192f3a4-7b1c-7d2e-8a3f-4b5c6d7e8f01",
+      "event_type": "span",
+      "sent_at": "2026-11-10T09:15:03.000Z",
+      "data": {
+        "span_id": "0192f3a4-7b1d-7a10-9c11-1a2b3c4d5e01",
+        "trace_id": "0192f3a4-7b1c-7d2e-8a3f-4b5c6d7e8f90",
+        "type": "retrieval",
+        "name": "retrieve docs",
+        "start_time": "2026-11-10T09:15:00.000Z",
+        "end_time": "2026-11-10T09:15:00.420Z",
+        "status": "ok",
+        "metadata": { "top_k": 5, "index": "support-articles" }
+      }
+    },
+    {
+      "schema_version": "0.1",
+      "event_id": "0192f3a4-7b1c-7d2e-8a3f-4b5c6d7e8f02",
+      "event_type": "span",
+      "sent_at": "2026-11-10T09:15:03.000Z",
+      "data": {
+        "span_id": "0192f3a4-7b1d-7a10-9c11-1a2b3c4d5e02",
+        "trace_id": "0192f3a4-7b1c-7d2e-8a3f-4b5c6d7e8f90",
+        "parent_span_id": "0192f3a4-7b1d-7a10-9c11-1a2b3c4d5e01",
+        "type": "llm",
+        "name": "answer question",
+        "start_time": "2026-11-10T09:15:00.450Z",
+        "end_time": "2026-11-10T09:15:02.300Z",
+        "status": "ok",
+        "llm": {
+          "model": "gpt-4o-mini",
+          "provider": "openai",
+          "input": [
+            { "role": "system", "content": "Answer using the provided context." },
+            { "role": "user", "content": "How do I reset my password?" }
+          ],
+          "output": "Open Settings, choose Security, then select Reset password.",
+          "input_tokens": 412,
+          "output_tokens": 38,
+          "parameters": { "temperature": 0.2, "max_tokens": 256 }
+        }
+      }
+    },
+    {
+      "schema_version": "0.1",
+      "event_id": "0192f3a4-7b1c-7d2e-8a3f-4b5c6d7e8f03",
+      "event_type": "trace",
+      "sent_at": "2026-11-10T09:15:03.000Z",
+      "data": {
+        "trace_id": "0192f3a4-7b1c-7d2e-8a3f-4b5c6d7e8f90",
+        "name": "support-chat",
+        "start_time": "2026-11-10T09:15:00.000Z",
+        "end_time": "2026-11-10T09:15:02.300Z",
+        "user_id": "user_1842",
+        "session_id": "sess_9a21",
+        "metadata": { "app_version": "2.4.1" },
+        "tags": ["production", "support"]
+      }
+    }
+  ]
+}
