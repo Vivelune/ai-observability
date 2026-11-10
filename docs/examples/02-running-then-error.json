@@ -1,0 +1,37 @@
+{
+  "events": [
+    {
+      "schema_version": "0.1",
+      "event_id": "0192f3a4-8c01-7d2e-8a3f-4b5c6d7e8f11",
+      "event_type": "span",
+      "sent_at": "2026-11-10T09:20:00.100Z",
+      "data": {
+        "span_id": "0192f3a4-8c02-7a10-9c11-1a2b3c4d5e11",
+        "trace_id": "0192f3a4-8c03-7d2e-8a3f-4b5c6d7e8f91",
+        "type": "tool",
+        "name": "lookup order",
+        "start_time": "2026-11-10T09:20:00.000Z",
+        "status": "running"
+      }
+    },
+    {
+      "schema_version": "0.1",
+      "event_id": "0192f3a4-8c01-7d2e-8a3f-4b5c6d7e8f12",
+      "event_type": "span",
+      "sent_at": "2026-11-10T09:20:05.200Z",
+      "data": {
+        "span_id": "0192f3a4-8c02-7a10-9c11-1a2b3c4d5e11",
+        "trace_id": "0192f3a4-8c03-7d2e-8a3f-4b5c6d7e8f91",
+        "type": "tool",
+        "name": "lookup order",
+        "start_time": "2026-11-10T09:20:00.000Z",
+        "end_time": "2026-11-10T09:20:05.000Z",
+        "status": "error",
+        "error": {
+          "type": "TimeoutError",
+          "message": "orders-api did not respond within 5000 ms"
+        }
+      }
+    }
+  ]
+}

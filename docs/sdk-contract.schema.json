@@ -1,0 +1,310 @@
+{
+  "title": "AI Observability SDK contract v0.1",
+  "request": {
+    "$ref": "#/definitions/IngestBatch",
+    "definitions": {
+      "IngestBatch": {
+        "type": "object",
+        "properties": {
+          "events": {
+            "type": "array",
+            "items": {
+              "anyOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "schema_version": {
+                      "type": "string",
+                      "pattern": "^\\d+\\.\\d+$"
+                    },
+                    "event_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "sent_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "event_type": {
+                      "type": "string",
+                      "const": "trace"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "trace_id": {
+                          "$ref": "#/definitions/IngestBatch/properties/events/items/anyOf/0/properties/event_id"
+                        },
+                        "name": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 256
+                        },
+                        "start_time": {
+                          "$ref": "#/definitions/IngestBatch/properties/events/items/anyOf/0/properties/sent_at"
+                        },
+                        "end_time": {
+                          "$ref": "#/definitions/IngestBatch/properties/events/items/anyOf/0/properties/sent_at"
+                        },
+                        "user_id": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 256
+                        },
+                        "session_id": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 256
+                        },
+                        "metadata": {
+                          "type": "object",
+                          "additionalProperties": {}
+                        },
+                        "tags": {
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 64
+                          },
+                          "maxItems": 20
+                        }
+                      },
+                      "required": ["trace_id", "name", "start_time"],
+                      "additionalProperties": false
+                    }
+                  },
+                  "required": ["schema_version", "event_id", "sent_at", "event_type", "data"],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "schema_version": {
+                      "$ref": "#/definitions/IngestBatch/properties/events/items/anyOf/0/properties/schema_version"
+                    },
+                    "event_id": {
+                      "$ref": "#/definitions/IngestBatch/properties/events/items/anyOf/0/properties/event_id"
+                    },
+                    "sent_at": {
+                      "$ref": "#/definitions/IngestBatch/properties/events/items/anyOf/0/properties/sent_at"
+                    },
+                    "event_type": {
+                      "type": "string",
+                      "const": "span"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "span_id": {
+                          "$ref": "#/definitions/IngestBatch/properties/events/items/anyOf/0/properties/event_id"
+                        },
+                        "trace_id": {
+                          "$ref": "#/definitions/IngestBatch/properties/events/items/anyOf/0/properties/event_id"
+                        },
+                        "parent_span_id": {
+                          "$ref": "#/definitions/IngestBatch/properties/events/items/anyOf/0/properties/event_id"
+                        },
+                        "type": {
+                          "type": "string",
+                          "enum": ["llm", "retrieval", "tool", "generic"]
+                        },
+                        "name": {
+                          "$ref": "#/definitions/IngestBatch/properties/events/items/anyOf/0/properties/data/properties/name"
+                        },
+                        "start_time": {
+                          "$ref": "#/definitions/IngestBatch/properties/events/items/anyOf/0/properties/sent_at"
+                        },
+                        "end_time": {
+                          "$ref": "#/definitions/IngestBatch/properties/events/items/anyOf/0/properties/sent_at"
+                        },
+                        "status": {
+                          "type": "string",
+                          "enum": ["running", "ok", "error"]
+                        },
+                        "error": {
+                          "type": "object",
+                          "properties": {
+                            "type": {
+                              "$ref": "#/definitions/IngestBatch/properties/events/items/anyOf/0/properties/data/properties/name"
+                            },
+                            "message": {
+                              "type": "string"
+                            },
+                            "stack": {
+                              "type": "string"
+                            }
+                          },
+                          "required": ["type", "message"],
+                          "additionalProperties": false
+                        },
+                        "llm": {
+                          "type": "object",
+                          "properties": {
+                            "model": {
+                              "$ref": "#/definitions/IngestBatch/properties/events/items/anyOf/0/properties/data/properties/name"
+                            },
+                            "provider": {
+                              "$ref": "#/definitions/IngestBatch/properties/events/items/anyOf/0/properties/data/properties/name"
+                            },
+                            "input": {
+                              "anyOf": [
+                                {
+                                  "type": "string"
+                                },
+                                {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "object",
+                                    "properties": {
+                                      "role": {
+                                        "type": "string",
+                                        "enum": ["system", "user", "assistant", "tool"]
+                                      },
+                                      "content": {
+                                        "type": "string"
+                                      }
+                                    },
+                                    "required": ["role", "content"],
+                                    "additionalProperties": false
+                                  }
+                                }
+                              ]
+                            },
+                            "output": {
+                              "$ref": "#/definitions/IngestBatch/properties/events/items/anyOf/1/properties/data/properties/llm/properties/input"
+                            },
+                            "input_tokens": {
+                              "type": "integer",
+                              "minimum": 0
+                            },
+                            "output_tokens": {
+                              "type": "integer",
+                              "minimum": 0
+                            },
+                            "parameters": {
+                              "type": "object",
+                              "additionalProperties": {}
+                            },
+                            "io_truncated": {
+                              "type": "boolean"
+                            }
+                          },
+                          "required": ["model", "provider"],
+                          "additionalProperties": false
+                        },
+                        "metadata": {
+                          "$ref": "#/definitions/IngestBatch/properties/events/items/anyOf/0/properties/data/properties/metadata"
+                        }
+                      },
+                      "required": ["span_id", "trace_id", "type", "name", "start_time", "status"],
+                      "additionalProperties": false
+                    }
+                  },
+                  "required": ["schema_version", "event_id", "sent_at", "event_type", "data"],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "schema_version": {
+                      "$ref": "#/definitions/IngestBatch/properties/events/items/anyOf/0/properties/schema_version"
+                    },
+                    "event_id": {
+                      "$ref": "#/definitions/IngestBatch/properties/events/items/anyOf/0/properties/event_id"
+                    },
+                    "sent_at": {
+                      "$ref": "#/definitions/IngestBatch/properties/events/items/anyOf/0/properties/sent_at"
+                    },
+                    "event_type": {
+                      "type": "string",
+                      "const": "eval_result"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "eval_id": {
+                          "$ref": "#/definitions/IngestBatch/properties/events/items/anyOf/0/properties/event_id"
+                        },
+                        "trace_id": {
+                          "$ref": "#/definitions/IngestBatch/properties/events/items/anyOf/0/properties/event_id"
+                        },
+                        "span_id": {
+                          "$ref": "#/definitions/IngestBatch/properties/events/items/anyOf/0/properties/event_id"
+                        },
+                        "name": {
+                          "$ref": "#/definitions/IngestBatch/properties/events/items/anyOf/0/properties/data/properties/name"
+                        },
+                        "score": {
+                          "type": "number",
+                          "minimum": 0,
+                          "maximum": 1
+                        },
+                        "reasoning": {
+                          "type": "string"
+                        },
+                        "judge_model": {
+                          "$ref": "#/definitions/IngestBatch/properties/events/items/anyOf/0/properties/data/properties/name"
+                        }
+                      },
+                      "required": ["eval_id", "trace_id", "name", "score"],
+                      "additionalProperties": false
+                    }
+                  },
+                  "required": ["schema_version", "event_id", "sent_at", "event_type", "data"],
+                  "additionalProperties": false
+                }
+              ]
+            },
+            "minItems": 1,
+            "maxItems": 500
+          }
+        },
+        "required": ["events"],
+        "additionalProperties": false
+      }
+    },
+    "$schema": "http://json-schema.org/draft-07/schema#"
+  },
+  "response": {
+    "$ref": "#/definitions/IngestResponse",
+    "definitions": {
+      "IngestResponse": {
+        "type": "object",
+        "properties": {
+          "accepted": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "rejected": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "index": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "event_id": {
+                  "type": "string"
+                },
+                "code": {
+                  "type": "string",
+                  "enum": ["invalid_event", "unknown_event_type", "unsupported_schema_version"]
+                },
+                "message": {
+                  "type": "string"
+                }
+              },
+              "required": ["index", "code", "message"],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": ["accepted", "rejected"],
+        "additionalProperties": false
+      }
+    },
+    "$schema": "http://json-schema.org/draft-07/schema#"
+  }
+}

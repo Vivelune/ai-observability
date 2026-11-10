@@ -1,0 +1,19 @@
+{
+  "events": [
+    {
+      "schema_version": "0.1",
+      "event_id": "0192f3a4-9d01-7d2e-8a3f-4b5c6d7e8f21",
+      "event_type": "eval_result",
+      "sent_at": "2026-11-10T09:30:00.000Z",
+      "data": {
+        "eval_id": "0192f3a4-9d02-7a10-9c11-1a2b3c4d5e21",
+        "trace_id": "0192f3a4-7b1c-7d2e-8a3f-4b5c6d7e8f90",
+        "span_id": "0192f3a4-7b1d-7a10-9c11-1a2b3c4d5e02",
+        "name": "answer-relevance",
+        "score": 0.85,
+        "reasoning": "The answer addresses the question directly and matches the retrieved context.",
+        "judge_model": "gpt-4o-mini"
+      }
+    }
+  ]
+}
