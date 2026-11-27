@@ -2,15 +2,17 @@
   "name": "ai-observability",
   "private": true,
   "scripts": {
-    "infra:up": "docker compose -f infra/docker-compose.yml up -d",
-    "infra:down": "docker compose -f infra/docker-compose.yml down",
-    "infra:ps": "docker compose -f infra/docker-compose.yml ps",
-    "build": "pnpm -r --filter \"./packages/*\" build",
+    "infra:up": "docker compose --env-file .env -f infra/docker-compose.yml up -d",
+    "infra:down": "docker compose --env-file .env -f infra/docker-compose.yml down",
+    "infra:ps": "docker compose --env-file .env -f infra/docker-compose.yml ps",
+    "build": "pnpm -r --filter \"./packages/*\" --filter \"./apps/ingest\" build",
     "lint": "eslint .",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "test": "vitest run",
-    "contract:json": "pnpm --filter @ai-observability/schema gen:jsonschema"
+    "contract:json": "pnpm --filter @ai-observability/schema gen:jsonschema",
+    "ingest:start": "pnpm --filter @ai-observability/ingest start",
+    "db:migrate": "pnpm --filter @ai-observability/ingest db:migrate"
   },
   "devDependencies": {
     "@eslint/js": "^9.0.0",
@@ -22,7 +24,20 @@
     "vitest": "^3.0.0"
   },
   "dependencies": {
+    "@nestjs/common": "^11.2.11",
+    "@nestjs/core": "^11.2.11",
+    "@nestjs/platform-express": "^11.2.11",
+    "@nestjs/testing": "^11.2.11",
+    "@types/express": "^5.0.6",
     "@types/node": "^26.6.6",
+    "@types/pg": "^8.23.1",
+    "@types/supertest": "^7.2.1",
+    "express": "^5.3.0",
+    "kafkajs": "^2.2.4",
+    "pg": "^8.23.1",
+    "reflect-metadata": "^0.2.2",
+    "rxjs": "^7.8.2",
+    "supertest": "^7.3.2",
     "zod": "^3.25.76",
     "zod-to-json-schema": "^3.25.2"
   }
