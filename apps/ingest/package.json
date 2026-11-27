@@ -1,0 +1,32 @@
+{
+  "name": "@ai-observability/ingest",
+  "version": "0.0.1",
+  "private": true,
+  "main": "dist/main.js",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "start": "node --env-file=../../.env dist/main.js",
+    "db:migrate": "node --env-file=../../.env scripts/migrate.mjs",
+    "db:create-key": "node --env-file=../../.env scripts/create-key.mjs"
+  },
+  "dependencies": {
+    "@ai-observability/schema": "workspace:*",
+    "@nestjs/common": "^11.0.0",
+    "@nestjs/core": "^11.0.0",
+    "@nestjs/platform-express": "^11.0.0",
+    "express": "^5.0.0",
+    "kafkajs": "^2.2.4",
+    "pg": "^8.13.0",
+    "reflect-metadata": "^0.2.2",
+    "rxjs": "^7.8.1"
+  },
+  "devDependencies": {
+    "@nestjs/testing": "^11.0.0",
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.0.0",
+    "@types/pg": "^8.11.0",
+    "@types/supertest": "^6.0.0",
+    "supertest": "^7.0.0",
+    "typescript": "^5.6.0"
+  }
+}
